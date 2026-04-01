@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 const photos = [
@@ -9,7 +8,7 @@ const photos = [
   { src: "/images/Reception1.jpeg", label: "Entrance" },
   { src: "/images/Reception4.jpeg", label: "Ground Floor" },
   { src: "/images/PlayArea.jpeg", label: "Play Area — Feed Your Creativity" },
-  { src: "/images/The_ LAB_Room.jpeg", label: "The LAB Room" },
+  { src: "/images/The_%20LAB_Room.jpeg", label: "The LAB Room" },
   { src: "/images/ChowArea.jpeg", label: "Chow Area" },
   { src: "/images/LittleDrinkyPoo.jpeg", label: "The Bar" },
 ];
@@ -59,12 +58,11 @@ export default function ColabHouse() {
                   : "aspect-[3/2]"
               }`}
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={photo.src}
                 alt={photo.label}
-                fill
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
-                sizes={photo.span ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 50vw, 33vw"}
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               {/* Overlay with label */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 sm:p-6">
