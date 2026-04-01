@@ -1,6 +1,18 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
+
+const photos = [
+  { src: "/images/Reception3.jpeg", label: "Reception — One Space. Infinite Ideas.", span: true },
+  { src: "/images/Reception2.jpeg", label: "The Lounge" },
+  { src: "/images/Reception1.jpeg", label: "Entrance" },
+  { src: "/images/Reception4.jpeg", label: "Ground Floor" },
+  { src: "/images/PlayArea.jpeg", label: "Play Area — Feed Your Creativity" },
+  { src: "/images/The_ LAB_Room.jpeg", label: "The LAB Room" },
+  { src: "/images/ChowArea.jpeg", label: "Chow Area" },
+  { src: "/images/LittleDrinkyPoo.jpeg", label: "The Bar" },
+];
 
 export default function ColabHouse() {
   return (
@@ -26,7 +38,7 @@ export default function ColabHouse() {
           </p>
         </motion.div>
 
-        {/* Photo Grid — placeholders for now */}
+        {/* Photo Grid */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -34,47 +46,33 @@ export default function ColabHouse() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="grid grid-cols-2 md:grid-cols-3 gap-4"
         >
-          {[
-            "Reception & Entrance",
-            "Open-Plan Workspace",
-            "Meeting Room",
-            "Creative Studio",
-            "Breakout Area",
-            "Building Exterior",
-          ].map((label, i) => (
-            <div
-              key={label}
-              className={`relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 ${
-                i === 0 ? "md:col-span-2 md:row-span-2 aspect-[4/3]" : "aspect-[3/2]"
-              } flex items-center justify-center group hover:border-white/20 transition-all duration-500`}
+          {photos.map((photo, i) => (
+            <motion.div
+              key={photo.src}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
+              className={`relative rounded-2xl overflow-hidden group ${
+                photo.span
+                  ? "md:col-span-2 md:row-span-2 aspect-[4/3]"
+                  : "aspect-[3/2]"
+              }`}
             >
-              {/* Placeholder — replace with <Image> when photos are available */}
-              <div className="text-center p-4">
-                <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-white/10 flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-white/30"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-                    />
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={1.5}
-                      d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-                    />
-                  </svg>
-                </div>
-                <p className="text-sm text-white/40 font-medium">{label}</p>
-                <p className="text-xs text-white/20 mt-1">Photo coming soon</p>
+              <Image
+                src={photo.src}
+                alt={photo.label}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes={photo.span ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 50vw, 33vw"}
+              />
+              {/* Overlay with label */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-4 sm:p-6">
+                <p className="text-sm sm:text-base font-semibold text-white">
+                  {photo.label}
+                </p>
               </div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
       </div>
