@@ -1,53 +1,41 @@
 "use client";
 
-const dots = [
-  { color: "#ED1C24" },
-  { color: "#FFFFFF", dash: true },
-  { color: "#8DC63F" },
-  { color: "#F15A29" },
-  { color: "#29ABE2" },
-];
+import { brandDots, companies } from "@/lib/companies";
 
 export default function Footer() {
   return (
-    <footer className="bg-colab-black py-12">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Logo dots */}
-        <div className="flex items-center justify-center gap-3 mb-6">
-          {dots.map((dot, i) => (
-            <div key={i}>
-              {dot.dash ? (
-                <div
-                  className="w-6 h-1.5"
-                  style={{ backgroundColor: dot.color }}
-                />
+    <footer className="bg-colab-black py-14 text-white">
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-5 sm:px-8 md:flex-row md:items-end md:justify-between">
+        <div>
+          <p className="text-3xl font-semibold tracking-[0.3em]">COLAB</p>
+          <div className="mt-3 flex items-center gap-[0.95rem] pl-1">
+            {brandDots.map((d, i) =>
+              d.dash ? (
+                <span key={i} className="h-1 w-4 bg-white" />
               ) : (
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: dot.color }}
-                />
-              )}
-            </div>
-          ))}
+                <span key={i} className="h-2 w-2 rounded-full" style={{ backgroundColor: d.color }} />
+              ),
+            )}
+          </div>
+          <p className="mt-6 text-sm text-white/40">5 Zulberg Close, Bruma, Johannesburg, 2198</p>
         </div>
 
-        <p className="text-center text-sm text-white/30">
-          &copy; {new Date().getFullYear()} COLAB House. All rights reserved.
-        </p>
-
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-white/20">
-          <a href="https://atomicmarketing.co.za" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors">Atomic Marketing</a>
-          <span>&middot;</span>
-          <a href="https://iram.co.za" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors">iRam</a>
-          <span>&middot;</span>
-          <a href="https://outerjoin.co.za" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors">OuterJoin</a>
-          <span>&middot;</span>
-          <a href="https://atomicdigital.co.za" target="_blank" rel="noopener noreferrer" className="hover:text-white/50 transition-colors">Atomic Digital</a>
+        <div className="md:text-right">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm text-white/55 md:justify-end">
+            {companies.map((c) =>
+              c.url ? (
+                <li key={c.name}>
+                  <a href={c.url} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">
+                    {c.name}
+                  </a>
+                </li>
+              ) : (
+                <li key={c.name}>{c.name}</li>
+              ),
+            )}
+          </ul>
+          <p className="mt-4 text-xs text-white/30">&copy; {new Date().getFullYear()} COLAB. All rights reserved.</p>
         </div>
-
-        <p className="mt-6 text-center text-xs text-white/10">
-          5 Zulberg Close, Bruma, Johannesburg, 2198
-        </p>
       </div>
     </footer>
   );

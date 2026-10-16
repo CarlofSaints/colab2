@@ -7,14 +7,14 @@
   --color-colab-orange: #F15A29;
   --color-colab-blue: #29ABE2;
   --color-colab-purple: #7B2D8E;
-  --color-colab-black: #111111;
-  --color-colab-dark: #1a1a1a;
-  --color-colab-gray: #f5f5f5;
+  --color-colab-black: #111113;
+  --color-colab-dark: #161618;
+  --color-colab-gray: #f4f3f0;
+  --color-colab-paper: #faf9f6;
 
-  --font-display: "Inter", system-ui, sans-serif;
+  --font-display: var(--font-outfit), system-ui, sans-serif;
 }
 
-/* ── Global Resets ── */
 html {
   scroll-behavior: smooth;
 }
@@ -22,58 +22,111 @@ html {
 body {
   font-family: var(--font-display);
   color: var(--color-colab-black);
+  background: var(--color-colab-paper);
   overflow-x: hidden;
 }
 
-/* ── Custom Utility Classes ── */
-.text-gradient {
-  background: linear-gradient(135deg, var(--color-colab-red), var(--color-colab-orange), var(--color-colab-green), var(--color-colab-blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+h1, h2, h3 {
+  text-wrap: balance;
 }
 
-/* ── Section Spacing ── */
-section {
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--color-colab-orange);
+  color: white;
+}
+
+/* ── Film grain over the whole page ── */
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── Hero colour orbs ── */
+@keyframes drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(6vw, -4vh) scale(1.1); }
+  66% { transform: translate(-4vw, 5vh) scale(0.95); }
+}
+
+.orb {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: drift 22s ease-in-out infinite;
+}
+
+/* ── Goose bob ── */
+@keyframes bob {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50% { transform: translateY(-6px) rotate(3deg); }
+}
+
+.bob {
+  animation: bob 3.2s ease-in-out infinite;
+}
+
+/* ── Spotlight card border (follows the cursor via --x / --y) ── */
+.spotlight {
   position: relative;
+  isolation: isolate;
 }
 
-/* ── Scroll indicator animation ── */
-@keyframes bounce-slow {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(10px); }
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(420px circle at var(--x, 50%) var(--y, 50%), var(--accent), transparent 45%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 300ms;
+  z-index: -1;
 }
 
-.animate-bounce-slow {
-  animation: bounce-slow 2s ease-in-out infinite;
+.spotlight:hover::before {
+  opacity: 1;
 }
 
-/* ── Timeline connector ── */
-.timeline-line {
-  background: linear-gradient(
-    to right,
-    var(--color-colab-red),
-    var(--color-colab-green),
-    var(--color-colab-orange),
-    var(--color-colab-blue),
-    var(--color-colab-purple)
-  );
+/* ── Marquee ── */
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+.marquee {
+  animation: marquee 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb, .bob, .marquee { animation: none; }
+  html { scroll-behavior: auto; }
 }
 
 /* ── Google Maps responsive embed ── */
 .map-container {
   position: relative;
-  padding-bottom: 56.25%;
+  padding-bottom: 62%;
   height: 0;
   overflow: hidden;
-  border-radius: 1rem;
 }
 
 .map-container iframe {
   position: absolute;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
+  filter: grayscale(0.6) contrast(1.05);
 }

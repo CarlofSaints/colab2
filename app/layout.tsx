@@ -1,29 +1,36 @@
 import type { Metadata } from "next";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+
+const description =
+  "COLAB is a partnership of six specialist retail businesses under one roof in Bruma, Johannesburg: activations, account management, data analytics, digital marketing, sell-out and field tracking.";
+
 export const metadata: Metadata = {
-  title: "COLAB House | Where Retail Meets Results",
-  description:
-    "COLAB House is home to five specialist companies working together to deliver end-to-end retail solutions — from in-store activations to data analytics and digital marketing.",
+  metadataBase: new URL("https://www.colab2.co.za"),
+  title: "COLAB | Where Retail Meets Results",
+  description,
   keywords: [
     "COLAB",
     "COLAB House",
     "retail marketing",
     "in-store activations",
     "retail account management",
-    "data analytics",
+    "retail data analytics",
     "digital marketing",
+    "field tracking",
     "Johannesburg",
     "Bruma",
   ],
   openGraph: {
-    title: "COLAB House | Where Retail Meets Results",
-    description:
-      "Five specialist companies. One roof. Complete retail solutions.",
+    title: "COLAB | Where Retail Meets Results",
+    description: "Six specialist businesses. One way of working.",
     url: "https://colab2.co.za",
-    siteName: "COLAB House",
+    siteName: "COLAB",
     locale: "en_ZA",
     type: "website",
+    images: ["/logos/colab-logo.png"],
   },
 };
 
@@ -33,20 +40,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-          rel="stylesheet"
-        />
-      </head>
-      <body className="antialiased">{children}</body>
+    <html lang="en" className={outfit.variable}>
+      <body className="antialiased">
+        <a
+          href="#about"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:rounded-lg focus:bg-white focus:px-4 focus:py-2 focus:text-sm"
+        >
+          Skip to content
+        </a>
+        {children}
+        <div className="grain" aria-hidden />
+      </body>
     </html>
   );
 }
