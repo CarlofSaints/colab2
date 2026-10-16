@@ -51,6 +51,7 @@ export const companies: Company[] = [
       "The digital arm. Atomic Digital takes brands online with digital marketing, social media, e-commerce support and content that turns browsers into buyers.",
     color: "#29ABE2",
     url: "https://atomicdigital.co.za",
+    logo: "/logos/atomic-digital.png",
     year: "2020",
     milestone: "Atomic Digital goes live. Creativity meets the cloud.",
   },
@@ -60,6 +61,7 @@ export const companies: Company[] = [
     description:
       "Turning spark into surge. Catalyst drives sell-out performance by pulling the strengths of every COLAB business into focused, results-driven campaigns.",
     color: "#7B2D8E",
+    logo: "/logos/catalyst-sell-out.png",
     year: "2022",
     milestone: "Catalyst ignites. Spark becomes surge.",
   },
