@@ -1,153 +1,78 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useLayoutEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { companies } from "@/lib/companies";
 
-interface Milestone {
-  year: string;
-  title: string;
-  subtitle: string;
-  color: string;
-}
-
-const milestones: Milestone[] = [
-  {
-    year: "2005",
-    title: "Atomic Marketing Is Born",
-    subtitle: "Where it all exploded — Atomic Spark ignites the journey.",
-    color: "#ED1C24",
-  },
-  {
-    year: "2011",
-    title: "iRam Enters the Scene",
-    subtitle: "Precision meets purpose — where retail meets detail.",
-    color: "#8DC63F",
-  },
-  {
-    year: "2017",
-    title: "OuterJoin Launches",
-    subtitle: "Connecting the dots — ideas and data finally sync.",
-    color: "#F15A29",
-  },
-  {
-    year: "2020",
-    title: "Digital Takes Over",
-    subtitle: "Atomic Digital goes live — creativity meets the cloud.",
-    color: "#29ABE2",
-  },
-  {
-    year: "2022",
-    title: "Catalyst Ignites",
-    subtitle: "Turning spark into surge — energy, change, acceleration.",
-    color: "#7B2D8E",
-  },
-  {
-    year: "2025",
-    title: "COLAB House Opens",
-    subtitle: "One roof, five companies — the serious office upgrade.",
-    color: "#111111",
-  },
-];
+const milestones = [
+  ...companies.map((c) => ({ year: c.year, title: c.name, subtitle: c.milestone, color: c.color })),
+  { year: "2025", title: "COLAB House opens", subtitle: "One roof in Bruma. The serious office upgrade.", color: "#111113" },
+].sort((a, b) => a.year.localeCompare(b.year));
 
 export default function Timeline() {
+  const section = useRef<HTMLElement>(null);
+  const track = useRef<HTMLDivElement>(null);
+  const [distance, setDistance] = useState(0);
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  const x = useTransform(scrollYProgress, [0, 1], [0, -distance]);
+  const line = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  useLayoutEffect(() => {
+    const measure = () => track.current && setDistance(Math.max(0, track.current.scrollWidth - window.innerWidth));
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
   return (
-    <section id="timeline" className="py-24 sm:py-32 bg-white overflow-hidden">
-      <div className="mx-auto max-w-6xl px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-20"
-        >
-          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-colab-green mb-4">
-            Our Journey
-          </p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-colab-black">
-            20 Years in the Making
-          </h2>
-          <div className="mt-4 mx-auto w-20 h-1 rounded-full bg-gradient-to-r from-colab-red via-colab-green to-colab-blue" />
-        </motion.div>
+    <section id="timeline" ref={section} className="relative bg-colab-paper md:h-[320vh]">
+      <div className="md:sticky md:top-0 md:flex md:h-[100dvh] md:flex-col md:justify-center md:overflow-hidden">
+        <div className="mx-auto w-full max-w-7xl px-5 pt-28 sm:px-8 md:pt-0">
+          <p className="mb-4 text-sm font-medium text-colab-green">Our journey</p>
+          <h2 className="max-w-3xl text-4xl font-semibold tracking-tight sm:text-6xl">Twenty-one years in the making.</h2>
+        </div>
 
-        {/* Desktop Timeline (horizontal) */}
-        <div className="hidden lg:block relative">
-          {/* Horizontal line */}
-          <div className="absolute top-[60px] left-0 right-0 h-1 timeline-line rounded-full" />
-
-          <div className="grid grid-cols-6 gap-4">
-            {milestones.map((m, i) => (
-              <motion.div
-                key={m.year}
-                initial={{ opacity: 0, y: i % 2 === 0 ? -30 : 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15, duration: 0.6 }}
-                className="relative flex flex-col items-center text-center"
-              >
-                {/* Dot on line */}
-                <div
-                  className="w-5 h-5 rounded-full border-4 border-white shadow-lg z-10 mt-[50px]"
-                  style={{ backgroundColor: m.color }}
-                />
-
-                {/* Year */}
-                <div
-                  className="mt-4 text-3xl font-black"
-                  style={{ color: m.color }}
-                >
+        {/* Desktop: scroll drives the row sideways */}
+        <div className="relative mt-16 hidden md:block">
+          <div className="absolute left-0 right-0 top-[11px] h-px bg-black/10" />
+          <motion.div
+            className="absolute left-0 top-[11px] h-px"
+            style={{ width: line, background: "linear-gradient(90deg,#ED1C24,#8DC63F,#F15A29,#29ABE2,#7B2D8E,#F05A2B)" }}
+          />
+          <motion.div ref={track} style={{ x }} className="flex w-max gap-6 pl-[max(2rem,calc((100vw-80rem)/2+2rem))] pr-[20vw]">
+            {milestones.map((m) => (
+              <div key={m.title} className="w-[340px] shrink-0">
+                <span className="block h-[22px] w-[22px] rounded-full border-4 border-colab-paper" style={{ backgroundColor: m.color }} />
+                <p className="mt-8 text-7xl font-semibold tracking-tighter" style={{ color: m.color }}>
                   {m.year}
-                </div>
-
-                {/* Title */}
-                <h3 className="mt-2 text-sm font-bold text-colab-black uppercase tracking-wide">
-                  {m.title}
-                </h3>
-
-                {/* Subtitle */}
-                <p className="mt-1 text-xs text-gray-400 leading-relaxed">
-                  {m.subtitle}
                 </p>
-              </motion.div>
+                <h3 className="mt-4 text-xl font-semibold">{m.title}</h3>
+                <p className="mt-2 leading-relaxed text-black/55">{m.subtitle}</p>
+              </div>
             ))}
-          </div>
+          </motion.div>
         </div>
 
-        {/* Mobile Timeline (vertical) */}
-        <div className="lg:hidden relative">
-          {/* Vertical line */}
-          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-colab-red via-colab-green to-colab-purple" />
-
-          <div className="flex flex-col gap-10">
-            {milestones.map((m, i) => (
-              <motion.div
-                key={m.year}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1, duration: 0.5 }}
-                className="relative pl-16"
-              >
-                {/* Dot */}
-                <div
-                  className="absolute left-[17px] top-1 w-4 h-4 rounded-full border-4 border-white shadow-lg"
-                  style={{ backgroundColor: m.color }}
-                />
-
-                {/* Year */}
-                <div
-                  className="text-2xl font-black"
-                  style={{ color: m.color }}
-                >
-                  {m.year}
-                </div>
-
-                <h3 className="mt-1 text-base font-bold text-colab-black">
-                  {m.title}
-                </h3>
-                <p className="mt-1 text-sm text-gray-400">{m.subtitle}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+        {/* Phone: plain vertical list */}
+        <ol className="mx-5 mt-12 space-y-10 border-l border-black/10 pb-28 pl-8 md:hidden">
+          {milestones.map((m) => (
+            <motion.li
+              key={m.title}
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="relative"
+            >
+              <span className="absolute -left-[39px] top-2 h-3.5 w-3.5 rounded-full" style={{ backgroundColor: m.color }} />
+              <p className="text-4xl font-semibold tracking-tighter" style={{ color: m.color }}>
+                {m.year}
+              </p>
+              <h3 className="mt-2 text-lg font-semibold">{m.title}</h3>
+              <p className="mt-1 text-black/55">{m.subtitle}</p>
+            </motion.li>
+          ))}
+        </ol>
       </div>
     </section>
   );

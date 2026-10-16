@@ -1,3 +1,6 @@
+"use client";
+
+import { MotionConfig } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import About from "@/components/About";
@@ -9,15 +12,17 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main>
+    <MotionConfig reducedMotion="user">
       <Navbar />
-      <Hero />
-      <About />
-      <Companies />
-      <Timeline />
-      <ColabHouse />
-      <Contact />
+      <main>
+        <Hero />
+        <About />
+        <Companies />
+        <Timeline />
+        <ColabHouse />
+        <Contact />
+      </main>
       <Footer />
-    </main>
+    </MotionConfig>
   );
 }
