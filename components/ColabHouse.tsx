@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const photos = [
@@ -51,11 +52,11 @@ export default function ColabHouse() {
               transition={{ delay: (i % 3) * 0.12, duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               className={`group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl ${p.tall ? "aspect-[4/5]" : "aspect-[4/3]"}`}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={p.src}
                 alt={`COLAB House ${p.label.toLowerCase()}`}
-                loading="lazy"
+                fill
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
               />
               <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 to-transparent p-5 pt-16">
