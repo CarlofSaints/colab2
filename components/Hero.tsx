@@ -55,7 +55,7 @@ export default function Hero() {
           COLAB House · Bruma, Johannesburg
         </motion.p>
 
-        <h1 className="sr-only">COLAB</h1>
+        <h1 className="sr-only">COLAB: six specialist retail businesses under one roof in Bruma, Johannesburg</h1>
         <div aria-hidden className="relative flex items-end gap-4 sm:gap-8 md:gap-12">
           {letters.map((letter, i) => (
             <motion.div

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import { companies } from "@/lib/companies";
 
 const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
 
@@ -9,7 +10,7 @@ const description =
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.colab2.co.za"),
-  title: "COLAB | Where Retail Meets Results",
+  title: "COLAB | Six retail specialists under one roof in Johannesburg",
   description,
   keywords: [
     "COLAB",
@@ -23,15 +24,34 @@ export const metadata: Metadata = {
     "Johannesburg",
     "Bruma",
   ],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: "COLAB | Where Retail Meets Results",
+    title: "COLAB | Six retail specialists under one roof in Johannesburg",
     description: "Six specialist businesses. One way of working.",
-    url: "https://colab2.co.za",
+    url: "https://www.colab2.co.za",
     siteName: "COLAB",
     locale: "en_ZA",
     type: "website",
     images: ["/logos/colab-logo.png"],
   },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "COLAB",
+  url: "https://www.colab2.co.za",
+  logo: "https://www.colab2.co.za/logos/colab-logo.png",
+  description,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "5 Zulberg Close",
+    addressLocality: "Bruma",
+    addressRegion: "Johannesburg",
+    postalCode: "2198",
+    addressCountry: "ZA",
+  },
+  member: companies.map((c) => ({ "@type": "Organization", name: c.name, description: c.tagline, ...(c.url && { url: c.url }) })),
 };
 
 export default function RootLayout({
@@ -48,6 +68,7 @@ export default function RootLayout({
         >
           Skip to content
         </a>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
         {children}
         <div className="grain" aria-hidden />
       </body>
