@@ -53,7 +53,7 @@ export default function Companies() {
                 <div className="flex items-start justify-between">
                   <span className="font-mono text-xs text-white/40">Est. {c.year}</span>
                   {c.logo ? (
-                    <span className="bob flex h-14 w-14 items-center justify-center rounded-2xl bg-white p-1.5">
+                    <span className={`${c.flag ? "bob " : ""}flex h-14 w-14 items-center justify-center rounded-2xl bg-white p-1.5`}>
                       <Image src={c.logo} alt="" width={96} height={96} className="h-full w-full object-contain" />
                     </span>
                   ) : (
