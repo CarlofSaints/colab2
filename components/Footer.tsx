@@ -34,7 +34,7 @@ export default function Footer() {
               ),
             )}
           </ul>
-          <p className="mt-4 text-xs text-white/30">&copy; {new Date().getFullYear()} COLAB. All rights reserved.</p>
+          <p className="mt-4 text-xs text-white/55">&copy; {new Date().getFullYear()} COLAB SQUARED (PTY) LTD. Reg. no. 2018/240410/07. All rights reserved.</p>
         </div>
       </div>
     </footer>
